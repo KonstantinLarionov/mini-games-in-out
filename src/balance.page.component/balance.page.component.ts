@@ -36,7 +36,7 @@ export class BalancePageComponent implements OnInit {
   readonly trcWallet = 'TVgGybqBzS6pGfMhoQ3SRxGXmXxv91nqfP';
   readonly qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('USDT TRC20: TVgGybqBzS6pGfMhoQ3SRxGXmXxv91nqfP')}`;
 
-  baseUrl = 'https://api.reloapp.ru/api';
+  baseUrl = 'https://minigames-back-8pwb.onrender.com';
   telegramId = '';
 
   // формы
@@ -55,7 +55,7 @@ export class BalancePageComponent implements OnInit {
   }
 
   loadProfile() {
-    this.http.get<Profile>(`${this.baseUrl}/profile/balance/${this.telegramId}`)
+    this.http.get<Profile>(`${this.baseUrl}/Profile/balance/${this.telegramId}`)
       .subscribe(p => {
         this.profile = p;
         this.loadTransactions(p.id);
@@ -63,7 +63,7 @@ export class BalancePageComponent implements OnInit {
   }
 
   loadTransactions(profileId: string) {
-    this.http.get<Transaction[]>(`${this.baseUrl}/transactions/${profileId}`)
+    this.http.get<Transaction[]>(`${this.baseUrl}/Transactions/${profileId}`)
       .subscribe(t => this.transactions = t);
   }
 
@@ -83,7 +83,7 @@ export class BalancePageComponent implements OnInit {
       type: 'PayIn'
     };
 
-    this.http.post(`${this.baseUrl}/transactions/payin`, body).subscribe(() => {
+    this.http.post(`${this.baseUrl}/Transactions/payin`, body).subscribe(() => {
       alert('✅ Заявка на пополнение отправлена!');
       this.payAmount = 0;
       this.hashTx = '';
@@ -102,7 +102,7 @@ export class BalancePageComponent implements OnInit {
       currency: 'USDT',
       network: 'TRC20'
     };
-    this.http.post(`${this.baseUrl}/transactions/payout`, body).subscribe(() => {
+    this.http.post(`${this.baseUrl}/Transactions/payout`, body).subscribe(() => {
       alert('💸 Заявка на вывод отправлена!');
       this.payoutAmount = 0;
       this.payoutWallet = '';
