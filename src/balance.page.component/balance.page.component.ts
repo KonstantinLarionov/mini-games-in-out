@@ -33,8 +33,8 @@ export class BalancePageComponent implements OnInit {
   tab: 'main' | 'payin' | 'payout' | 'history' = 'main';
 
   readonly network = 'TRC20 (USDT)';
-  readonly trcWallet = 'TVgGybqBzS6pGfMhoQ3SRxGXmXxv91nqfP';
-  readonly qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('USDT TRC20: TVgGybqBzS6pGfMhoQ3SRxGXmXxv91nqfP')}`;
+  readonly trcWallet = 'TVfPH22Cc333ssorTMiwsVkqEKTAyyACyq';
+  readonly qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent('USDT TRC20: TVfPH22Cc333ssorTMiwsVkqEKTAyyACyq')}`;
 
   baseUrl = 'https://minigames-back-8pwb.onrender.com';
   telegramId = '';
