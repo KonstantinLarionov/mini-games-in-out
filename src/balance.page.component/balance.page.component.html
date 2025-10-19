@@ -1,0 +1,74 @@
+<div class="neon-bg"></div>
+
+<div class="neon-wrapper">
+  <h1 class="neon-logo">NEON GAMES</h1>
+
+  <nav class="neon-tabs">
+    <button [class.active]="tab==='main'" (click)="tab='main'">💰 Баланс</button>
+    <button [class.active]="tab==='payin'" (click)="tab='payin'">⬆ Пополнить</button>
+    <button [class.active]="tab==='payout'" (click)="tab='payout'">⬇ Вывести</button>
+    <button [class.active]="tab==='history'" (click)="tab='history'">📜 История</button>
+  </nav>
+
+  <section class="tab-content">
+    <!-- Баланс -->
+    <ng-container *ngIf="tab==='main' && profile">
+      <div class="balance-display">
+        <span class="label">Твой баланс</span>
+        <h2>{{ profile.balance | number:'1.2-2' }} USDT</h2>
+        <p class="network">Сеть: {{ network }}</p>
+      </div>
+    </ng-container>
+
+    <!-- Пополнение -->
+    <ng-container *ngIf="tab==='payin'">
+      <h3>Пополнение TRC20 (USDT)</h3>
+      <p class="info-text">Отправь USDT на адрес ниже:</p>
+
+      <div class="wallet-box">
+        <p class="wallet-address">{{ trcWallet }}</p>
+        <img [src]="qrUrl" alt="QR USDT TRC20">
+      </div>
+
+      <div *ngIf="!isConfirmMode; else confirmBlock">
+        <p class="subtext">После перевода нажми кнопку ниже 👇</p>
+        <button class="neon-btn" (click)="openConfirmMode()">Я пополнил</button>
+      </div>
+
+      <ng-template #confirmBlock>
+        <div class="confirm-block">
+          <h4>Подтверждение перевода</h4>
+          <input type="number" [(ngModel)]="payAmount" placeholder="Сумма USDT" class="neon-input">
+          <input type="text" [(ngModel)]="hashTx" placeholder="Хэш транзакции (TXID)" class="neon-input">
+          <button class="neon-btn" (click)="confirmPayIn()" style="border-bottom-right-radius: 0; border-top-right-radius: 0;">Отправить</button>
+          <button class="neon-btn danger" (click)="isConfirmMode=false" style="border-bottom-left-radius: 0; border-top-left-radius: 0;">Отмена</button>
+        </div>
+      </ng-template>
+    </ng-container>
+
+    <!-- Вывод -->
+    <ng-container *ngIf="tab==='payout'">
+      <h3>Вывод TRC20 (USDT)</h3>
+      <input type="number" [(ngModel)]="payoutAmount" placeholder="Сумма USDT" class="neon-input">
+      <input type="text" [(ngModel)]="payoutWallet" placeholder="Адрес кошелька TRC20" class="neon-input">
+      <button class="neon-btn danger" (click)="payOut()">🏧 Вывести</button>
+    </ng-container>
+
+    <!-- История -->
+    <ng-container *ngIf="tab==='history'">
+      <h3>История операций</h3>
+      <div *ngIf="transactions.length; else empty" class="history-table">
+        <div class="tx-row" *ngFor="let t of transactions">
+          <span>{{ t.createAt | date:'dd.MM HH:mm' }}</span>
+          <span [class.in]="t.type==='PayIn'" [class.out]="t.type==='PayOut'">
+            {{ t.type === 'PayIn' ? '+' : '-' }}{{ t.amount }} USDT
+          </span>
+          <span>{{ t.hash ? t.hash.substring(0,10)+'...' : '-' }}</span>
+        </div>
+      </div>
+      <ng-template #empty>
+        <p class="empty">Нет операций</p>
+      </ng-template>
+    </ng-container>
+  </section>
+</div>
